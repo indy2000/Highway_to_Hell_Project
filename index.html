@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>HtH - Highway to Hell Project</title>
+    <style>
+        html,
+        body{
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        body{
+            display: flex;
+        }
+
+        body, canvas{
+            background-color: black;
+        }
+
+        canvas{
+            width: 100%;
+            object-fit: contain;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        img {
+            display: none;
+        }
+    </style>
+    <script type="module" src="./src/index.js">
+
+    </script>
+    </head>
+    <body>
+        <canvas>
+
+        </canvas>
+        <img src="./chars/raveex.png" alt="raveex"/>
+        <img src="./chars/ella.png" alt="ella"/>
+        <img src="./stages/stage1.png" alt="background1"/>
+        <img src="./stages/stage2.png" alt="background2"/>
+        <img src="./stages/ken_stage.png" alt="ken_stage"/>
+    </body>
+</html>
