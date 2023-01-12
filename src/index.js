@@ -2,6 +2,8 @@ import { RaveEx } from "./entities/fighters/RaveEx.js";
 import { Ella } from "./entities/fighters/Ella.js";
 import { Stage } from "./entities/stages/Stage.js";
 import { FpsCounter } from "./entities/FpsCounter.js";
+import { STAGE_FLOOR } from "./constants/stage.js";
+import { FighterDirection } from "./constants/fighter.js";
 
 const GameViewPort = {
     WIDTH: 334,
@@ -23,25 +25,30 @@ window.addEventListener('load', function(){
    
    const entities = [
     new Stage(),
-    new RaveEx(80, 80, 130),
-    new Ella(80, 83, -130),
+    new RaveEx(104, STAGE_FLOOR, FighterDirection.LEFT),
+    new Ella(280, STAGE_FLOOR, FighterDirection.RIGHT),
     new FpsCounter(),
    ];
 
-    let previousTime = 0;
-    let secondsPassed = 0;
+   let frameTime = {
+     previousTime: 0,
+     secondsPassed: 0,
+   };
+    
 
-function frame(time){
+ function frame(time){
     window.requestAnimationFrame(frame);
-    //Pegar o tempo em segundos
-    secondsPassed = (time - previousTime) / 1000;
 
-    //Armazenar o tempo anterior
-    previousTime = time;
+    frameTime = {
+        //Pegar o tempo em segundos
+        secondsPassed: (time - frameTime.previousTime) / 1000,
+        //Armazenar o tempo anterior
+        previousTime: time,
+    };
 
     for(const entity of entities)
     {
-        entity.update(secondsPassed, context);
+        entity.update(frameTime, context);
     }
 
     for(const entity of entities)
@@ -53,6 +60,6 @@ function frame(time){
     //context.clearRect(0, 0, GameViewPort.WIDTH, GameViewPort.HEIGHT);
 }
 
-    window.requestAnimationFrame(frame);
+     window.requestAnimationFrame(frame);
     //console.log(context);
 });
