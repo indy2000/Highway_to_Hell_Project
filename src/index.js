@@ -3,7 +3,7 @@ import { Ella } from "./entities/fighters/Ella.js";
 import { Stage } from "./entities/stages/Stage.js";
 import { FpsCounter } from "./entities/FpsCounter.js";
 import { STAGE_FLOOR } from "./constants/stage.js";
-import { FighterDirection } from "./constants/fighter.js";
+import { FighterDirection, FighterState } from "./constants/fighter.js";
 
 const GameViewPort = {
     WIDTH: 334,
@@ -11,7 +11,34 @@ const GameViewPort = {
     //SCALE: 4,
 }
 
+function populateMoveDropdown() {
+    const dropdown = document.getElementById('state-dropdown');
+
+    Object.entries(FighterState).forEach(([, value]) => {
+        const option = document.createElement('option');
+        option.setAttribute('value', value);
+        option.innerText = value;
+        dropdown.appendChild(option);
+    });
+}
+
+function handleFormSubmit(event, fighters) {
+    event.preventDefault();
+
+    const checkboxesSelectionadas = Array.from(event.target.querySelectorAll('input:checked'))
+    .map(checkbox => checkbox.value);
+
+    const options = event.target.querySelector('select');
+
+    fighters.forEach(fighter => {
+        if(checkboxesSelectionadas.includes(fighter.name)){
+            fighter.changeState(options.value);
+        }
+    });
+}
+
 window.addEventListener('load', function(){
+    populateMoveDropdown();
     const canvasElement = document.querySelector('canvas');
     const context = canvasElement.getContext('2d');
 
@@ -22,11 +49,14 @@ window.addEventListener('load', function(){
     //canvasElement.style.height = `${GameViewPort.HEIGHT * GameViewPort.SCALE}px`;
 
     //const [raveex, stage1, stage2, ken_stage] = document.querySelectorAll('img');
-   
+   const fighters = [
+    new RaveEx(280, STAGE_FLOOR, FighterDirection.LEFT),
+    new Ella(104, STAGE_FLOOR, FighterDirection.RIGHT),
+   ]
+
    const entities = [
     new Stage(),
-    new RaveEx(104, STAGE_FLOOR, FighterDirection.LEFT),
-    new Ella(280, STAGE_FLOOR, FighterDirection.RIGHT),
+    ...fighters,
     new FpsCounter(),
    ];
 
@@ -59,7 +89,7 @@ window.addEventListener('load', function(){
     //console.log(time);
     //context.clearRect(0, 0, GameViewPort.WIDTH, GameViewPort.HEIGHT);
 }
-
+    this.document.addEventListener('submit', (event) => handleFormSubmit(event, fighters));
      window.requestAnimationFrame(frame);
     //console.log(context);
 });
