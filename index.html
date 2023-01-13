@@ -14,6 +14,9 @@
 
         body{
             display: flex;
+            flex-direction: column;
+            --form-height: 6rem;
+            --form-content-size: 2rem;
         }
 
         body, canvas{
@@ -30,17 +33,57 @@
         img {
             display: none;
         }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: var(--form-content-size);
+            height: var(--form-height);
+        }
+
+        form * {
+            font-size: var(--form-content-size);
+        }
+
+        input[type="checkbox"] {
+            width: var(--form-content-size);
+            height: var(--form-content-size);
+        }
+
+        main {
+            display: flex;
+            height: calc(100% - var(--form-height));
+        }
+
+        label {
+            color: white;
+        }
     </style>
     <script type="module" src="./src/index.js">
 
     </script>
     </head>
     <body>
-        <canvas>
-
-        </canvas>
-        <img id="raveex" src="./chars/raveex.png" alt="raveex"/>
-        <img id="ella" src="./chars/ella.png" alt="ella"/>
+        <form>
+            <div>
+                <input id="raveex" type="checkbox" name="fighter" value="RaveEx"/>
+                <label for="raveex">RaveEx</label>
+            </div>
+            <div>
+                <input id="ella" type="checkbox" name="fighter" value="Ella"/>
+                <label for="ella">Ella</label>
+            </div>
+            <select id="state-dropdown" name="state"></select>
+            <button type="submit">Selecionar</button>
+        </form>
+        <main>
+            <canvas width="384" height="224"></canvas>
+        </main>
+        <img id="raveexSrc" src="./chars/raveex.png" alt="raveex"/>
+        <img id="ellaSrc" src="./chars/ella.png" alt="ella"/>
         <img src="./stages/stage1.png" alt="background1"/>
         <img src="./stages/stage2.png" alt="background2"/>
         <img src="./stages/ken_stage.png" alt="ken_stage"/>
