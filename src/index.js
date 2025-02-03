@@ -1,12 +1,6 @@
 import { HighwayToHellGame } from "./HighwayToHellGame.js";
 import {  FighterState } from "./constants/fighter.js";
 
-const GameViewPort = {
-    WIDTH: 334,
-    HEIGHT: 224,
-    //SCALE: 4,
-}
-
 function populateMoveDropdown() {
     const dropdown = document.getElementById('state-dropdown');
 
