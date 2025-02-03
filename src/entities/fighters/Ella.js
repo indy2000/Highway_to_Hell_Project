@@ -19,7 +19,7 @@ export class Ella extends Fighter
 
         //this.frames = [];
         this.frames = this.frames.concat(this.fillFrameArray(idleString, 16));
-        this.frames = this.frames.concat(this.fillFrameArray(forwardsString, 13));
+        this.frames = this.frames.concat(this.fillFrameArray(forwardsString, 10));
         this.frames = this.frames.concat(this.fillFrameArray(backwardsString, 6));
         this.frames = this.frames.concat(this.fillFrameArray(jumpUpString, 5));
         this.frames = this.frames.concat(this.fillFrameArray(crouchDownString, 4));

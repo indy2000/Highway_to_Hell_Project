@@ -3,9 +3,9 @@ import { FighterState } from '../../constants/fighter.js';
 
 export class RaveEx extends Fighter
 {
-    constructor(x, y, velocidade)
+    constructor(x, y, direction, playerId)
     {
-        super('RaveEx', x, y, velocidade);
+        super('RaveEx', x, y, direction, playerId);
 
         this.image = document.querySelector('img[alt="raveex"]');
 
@@ -20,8 +20,10 @@ export class RaveEx extends Fighter
         let jumpUpString = 'raveex/jump-up-';
         let jumpForwards = 'raveex/jump-forwards-';
         let jumpBackwards = 'raveex/jump-backwards-';
+        //Inicia a agachada
         let crouchDownString = 'raveex/crouch-down-';
         let crouchString = 'raveex/crouch-';
+        //Finaliza a agachada
         let crouchUpString = 'raveex/crouch-up-';
         
 

@@ -1,10 +1,15 @@
+import { isKeyDown } from "../../InputHandler.js";
+import { isKeyUp } from "../../InputHandler.js";
+import * as control from "../../InputHandler.js";
+import { controls } from "../../constants/control.js";
 import { FighterDirection } from "../../constants/fighter.js";
 import { FighterState } from "../../constants/fighter.js";
 import { STAGE_FLOOR } from "../../constants/stage.js";
 
 export class Fighter{
-    constructor(name, x, y, direction){
+    constructor(name, x, y, direction, playerId){
         this.name = name;
+        this.playerId = playerId;
         this.image = new Image();
         this.position = {x, y};
         this.velocidade = {x: 0, y: 0};
@@ -30,13 +35,13 @@ export class Fighter{
             },
             [FighterState.WALK_FORWARD]: {
                 init: this.handleMoveInit.bind(this),
-                update: this.handleMoveState.bind(this),
-                validFrom: [FighterState.IDLE, FighterState.WALK_BACKWARD],
+                update: this.handleWalkForwardState.bind(this),
+                validFrom: [FighterState.IDLE, FighterState.WALK_FORWARD],
             },
             [FighterState.WALK_BACKWARD]: {
                 init: this.handleMoveInit.bind(this),
-                update: this.handleMoveState.bind(this),
-                validFrom: [FighterState.IDLE, FighterState.WALK_FORWARD],
+                update: this.handleWalkBackwardState.bind(this),
+                validFrom: [FighterState.IDLE, FighterState.WALK_BACKWARD],
             },
             [FighterState.JUMP_UP]: {
                 init: this.handleJumpInit.bind(this),
@@ -55,7 +60,7 @@ export class Fighter{
             },
             [FighterState.CROUCH]: {
                 init: () => { },
-                update: () => { },
+                update: this.handleCrouch.bind(this),
                 validFrom: [FighterState.CROUCH_DOWN]
             },
             [FighterState.CROUCH_DOWN]: {
@@ -66,7 +71,7 @@ export class Fighter{
             [FighterState.CROUCH_UP]: {
                 init: () => { },
                 update: this.handleCrouchUpState.bind(this),
-                validFrom: [FighterState.CROUCH]
+                validFrom: [FighterState.CROUCH, FighterState.CROUCH_DOWN]
             }
         }
 
@@ -89,7 +94,22 @@ export class Fighter{
     }
 
     handleIdleState() {
+        if(isKeyDown('ArrowLeft')) this.changeState(FighterState.WALK_BACKWARD);
+        if(isKeyDown('ArrowRight')) this.changeState(FighterState.WALK_FORWARD);
+        //if(control.isUp(this.playerId)) this.changeState(FighterState.JUMP_UP);
+        if(isKeyDown('ArrowUp')) this.changeState(FighterState.JUMP_UP);
+        if(isKeyDown('ArrowDown')) this.changeState(FighterState.CROUCH_DOWN);
+    }
 
+    handleWalkForwardState() {
+
+        if(isKeyDown('ArrowUp')) this.changeState(FighterState.JUMP_FORWARD);
+        if(isKeyUp('ArrowRight')) this.changeState(FighterState.IDLE);
+    }
+
+    handleWalkBackwardState() {
+        if(isKeyDown('ArrowUp')) this.changeState(FighterState.JUMP_BACKWARD);
+        if(isKeyUp('ArrowLeft')) this.changeState(FighterState.IDLE);
     }
 
     handleMoveInit() {
@@ -114,12 +134,19 @@ export class Fighter{
         }
     }
 
+    handleCrouch() {
+        if(isKeyUp('ArrowDown')) this.changeState(FighterState.CROUCH_UP);
+    }
+
     handleCrouchDownState() {
+        if(isKeyUp('ArrowDown'))
+        this.changeState(FighterState.CROUCH_UP);
+
         let framePath = this.animations[this.currentState][this.animations[this.currentState].length - 1].split('/')
         let frameName = framePath[framePath.length - 1]
 
-        if(this.image.src.includes(frameName))
-        this.changeState(FighterState.CROUCH);
+        if(this.image.src.includes(frameName)) 
+            this.changeState(FighterState.CROUCH);
     }
 
     handleCrouchUpState() {
